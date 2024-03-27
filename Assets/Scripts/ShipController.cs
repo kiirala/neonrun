@@ -10,31 +10,31 @@ public class ShipController : MonoBehaviour
     public int ZeroXPositionLane = 3;
     public float LaneSpacing = 0.8f;
 
-    private int lane;
-    // private Transform transform;
+    public float HitboxYPosition;
 
-    // Start is called before the first frame update
+    public int Lane { get; private set; }
+    public bool Crashed { get; set; }
+
     void Start()
     {
-        lane = ZeroXPositionLane;
-        // transform = GetComponent<Transform>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        Lane = ZeroXPositionLane;
     }
 
     public void ChangeLane(int direction)
     {
-        if (direction > 0 && lane < MaxLane)
+        if (Crashed) return;
+
+        if (direction > 0 && Lane < MaxLane)
         {
-            lane++;
+            Lane++;
         }
-        if (direction < 0 && lane > MinLane)
+        if (direction < 0 && Lane > MinLane)
         {
-            lane--;
+            Lane--;
         }
-        transform.localPosition = new Vector3((lane - ZeroXPositionLane) * LaneSpacing, transform.localPosition.y);
+        transform.localPosition =
+            new Vector3((Lane - ZeroXPositionLane) * LaneSpacing, transform.localPosition.y);
     }
+
+    public float HitboxYCenter { get => transform.localPosition.y + HitboxYPosition; }
 }
