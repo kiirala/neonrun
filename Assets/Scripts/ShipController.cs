@@ -11,13 +11,13 @@ public class ShipController : MonoBehaviour
     public float LaneSpacing = 0.8f;
 
     private int lane;
-    private Transform transform;
+    // private Transform transform;
 
     // Start is called before the first frame update
     void Start()
     {
         lane = ZeroXPositionLane;
-        transform = GetComponent<Transform>();
+        // transform = GetComponent<Transform>();
     }
 
     // Update is called once per frame
