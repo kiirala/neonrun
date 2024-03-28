@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShipController : MonoBehaviour
@@ -8,19 +6,20 @@ public class ShipController : MonoBehaviour
     public float HitboxRadius;
 
     public int Lane { get; private set; }
-    public bool Crashed { get; set; }
 
     private BoardConfiguration board;
+    private CommonGameState state;
 
     void Start()
     {
         board = GetComponentInParent<BoardConfiguration>();
+        state = GetComponentInParent<CommonGameState>();
         Lane = board.ZeroXPositionLane;
     }
 
     public void ChangeLane(int direction)
     {
-        if (Crashed) return;
+        if (state.Crashed) return;
 
         if (direction > 0 && Lane < board.MaxLane)
         {

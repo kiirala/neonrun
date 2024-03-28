@@ -6,7 +6,7 @@ public class ObstaclesContoller : MonoBehaviour
 {
     public SingleObstacleController ObstaclePrefab;
 
-    public bool Crashed { get; set; }
+    private CommonGameState state;
 
     private readonly List<SingleObstacleController> activeObstacles = new();
     private readonly List<SingleObstacleController> inactiveObstacles = new();
@@ -14,13 +14,14 @@ public class ObstaclesContoller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        state = GetComponentInParent<CommonGameState>();
         inactiveObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Crashed) return;
+        if (state.Crashed) return;
 
         if (activeObstacles.Count == 0)
         {
