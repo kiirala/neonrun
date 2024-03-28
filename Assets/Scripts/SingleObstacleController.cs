@@ -19,7 +19,7 @@ public class SingleObstacleController : MonoBehaviour
 
     private float LaneZeroToTop { get => board.LaneTopCoordinate - board.LaneZeroCoordinate; }
 
-    void Start()
+    void Awake()
     {
         board = GetComponentInParent<BoardConfiguration>();    
     }

@@ -4,27 +4,47 @@ using UnityEngine;
 
 public class ObstaclesContoller : MonoBehaviour
 {
+    public SingleObstacleController ObstaclePrefab;
+
     public bool Crashed { get; set; }
 
     private readonly List<SingleObstacleController> activeObstacles = new();
+    private readonly List<SingleObstacleController> inactiveObstacles = new();
 
     // Start is called before the first frame update
     void Start()
     {
-        activeObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
-        activeObstacles.ForEach(o => o.Initialize(3, 1.0f, Time.time));
+        inactiveObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Crashed) return;
-        
-        activeObstacles.ForEach(o =>
+
+        if (activeObstacles.Count == 0)
         {
-            o.UpdatePosition(Time.time);
-            if (!o.IsInView) o.Initialize(3, 1.0f, Time.time);
-        });
+            SpawnObstacle(1, 1);
+            SpawnObstacle(2, 3);
+            SpawnObstacle(3, 2);
+            SpawnObstacle(4, 3);
+            SpawnObstacle(5, 1);
+        }
+
+        activeObstacles.ForEach(o => { o.UpdatePosition(Time.time); });
+        int i = 0;
+        while (i < activeObstacles.Count)
+        {
+            if (!activeObstacles[i].IsInView)
+            {
+                inactiveObstacles.Add(activeObstacles[i]);
+                activeObstacles.RemoveAt(i);
+            }
+            else
+            {
+                i++;
+            }
+        }
     }
 
     public IEnumerable<SingleObstacleController> GetNearZero(int lane, float range)
@@ -32,4 +52,21 @@ public class ObstaclesContoller : MonoBehaviour
             o => o.Lane == lane &&
             o.BoardYPosition + o.HitboxRadius >= -range &&
             o.BoardYPosition - o.HitboxRadius <= range);
+
+    private void SpawnObstacle(int lane, int height)
+    {
+        SingleObstacleController obstacle;
+        if (inactiveObstacles.Count > 0)
+        {
+            obstacle = inactiveObstacles[^1];
+            inactiveObstacles.RemoveAt(inactiveObstacles.Count - 1);
+        }
+        else
+        {
+            obstacle = Instantiate(ObstaclePrefab, transform);
+        }
+        obstacle.Initialize(lane, height, Time.time);
+        activeObstacles.Add(obstacle);
+    }
+
 }
