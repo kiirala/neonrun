@@ -4,37 +4,42 @@ using UnityEngine;
 
 public class ShipController : MonoBehaviour
 {
-    public int MinLane = 1;
-    public int MaxLane = 5;
-
-    public int ZeroXPositionLane = 3;
-    public float LaneSpacing = 0.8f;
-
     public float HitboxYPosition;
+    public float HitboxRadius;
 
     public int Lane { get; private set; }
     public bool Crashed { get; set; }
 
+    private BoardConfiguration board;
+
     void Start()
     {
-        Lane = ZeroXPositionLane;
+        board = GetComponentInParent<BoardConfiguration>();
+        Lane = board.ZeroXPositionLane;
     }
 
     public void ChangeLane(int direction)
     {
         if (Crashed) return;
 
-        if (direction > 0 && Lane < MaxLane)
+        if (direction > 0 && Lane < board.MaxLane)
         {
             Lane++;
         }
-        if (direction < 0 && Lane > MinLane)
+        if (direction < 0 && Lane > board.MinLane)
         {
             Lane--;
         }
-        transform.localPosition =
-            new Vector3((Lane - ZeroXPositionLane) * LaneSpacing, transform.localPosition.y);
+        transform.localPosition = new Vector3(
+            (Lane - board.ZeroXPositionLane) * board.LaneSpacing,
+            transform.localPosition.y);
     }
 
     public float HitboxYCenter { get => transform.localPosition.y + HitboxYPosition; }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, HitboxYPosition), HitboxRadius);
+    }
 }

@@ -97,8 +97,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62d269f55f0df74fa3cb3d3f366b5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaneTopCoordinate: 5.5
-  LaneBottomCoordinate: -5.5
-  NominalFallSeconds: 10
-  LaneSpacing: 0.8
-  ZeroXPositionLane: 3
+  HitboxRadius: 0.18
+  VisibleRadius: 0.47

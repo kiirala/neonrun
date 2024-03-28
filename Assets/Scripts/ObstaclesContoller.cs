@@ -12,7 +12,7 @@ public class ObstaclesContoller : MonoBehaviour
     void Start()
     {
         activeObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
-        activeObstacles.ForEach(o => o.Initialize(3, Time.time));
+        activeObstacles.ForEach(o => o.Initialize(3, 1.0f, Time.time));
     }
 
     // Update is called once per frame
@@ -23,10 +23,13 @@ public class ObstaclesContoller : MonoBehaviour
         activeObstacles.ForEach(o =>
         {
             o.UpdatePosition(Time.time);
-            if (!o.IsInView()) o.Initialize(3, Time.time);
+            if (!o.IsInView) o.Initialize(3, 1.0f, Time.time);
         });
     }
 
-    public IEnumerable<SingleObstacleController> GetInRange(int lane, float ymin, float ymax)
-        => activeObstacles.Where(o => o.Lane == lane && o.YPos >= ymin && o.YPos <= ymax);
+    public IEnumerable<SingleObstacleController> GetNearZero(int lane, float range)
+        => activeObstacles.Where(
+            o => o.Lane == lane &&
+            o.BoardYPosition + o.HitboxRadius >= -range &&
+            o.BoardYPosition - o.HitboxRadius <= range);
 }

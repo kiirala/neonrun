@@ -2,36 +2,50 @@ using UnityEngine;
 
 public class SingleObstacleController : MonoBehaviour
 {
-    public float LaneTopCoordinate;
-    public float LaneBottomCoordinate;
-    public float NominalFallSeconds;
-
-    public float LaneSpacing = 0.8f;
-    public int ZeroXPositionLane = 3;
+    public float HitboxRadius;
+    public float VisibleRadius;
 
     public int Lane { get; private set; }
+    public float BoardYPosition { get; private set; }
+
+    private BoardConfiguration board;
+    private float initialPosition;
     private float timeSpawned;
-    private float latestElapsedTime;
 
-    public float YPos { get => transform.localPosition.y; }
+    public bool IsInView
+    {
+        get => transform.localPosition.y + VisibleRadius > board.InvisibleAfterCoordinate;
+    }
 
-    public void Initialize(int lane, float currentTime)
+    private float LaneZeroToTop { get => board.LaneTopCoordinate - board.LaneZeroCoordinate; }
+
+    void Start()
+    {
+        board = GetComponentInParent<BoardConfiguration>();    
+    }
+
+    public void Initialize(int lane, float positionAboveTop, float currentTime)
     {
         Lane = lane;
+        initialPosition = board.GameAreaHeight + positionAboveTop;
+        BoardYPosition = initialPosition;
         timeSpawned = currentTime;
-        latestElapsedTime = 0;
     }
 
     public void UpdatePosition(float currentTime)
     {
         var elapsed = currentTime - timeSpawned;
-        latestElapsedTime = elapsed;
-        var fractionalPosition = elapsed / NominalFallSeconds;
-        var position =
-            LaneTopCoordinate + fractionalPosition * (LaneBottomCoordinate - LaneTopCoordinate);
-        transform.localPosition = new((Lane - ZeroXPositionLane) * LaneSpacing, position);
+        var fractionalPosition = elapsed / board.NominalFallSeconds;
+        BoardYPosition = initialPosition - board.GameAreaHeight * fractionalPosition;
+        var y = board.LaneZeroCoordinate + LaneZeroToTop / board.GameAreaHeight * BoardYPosition;
+        transform.localPosition = new((Lane - board.ZeroXPositionLane) * board.LaneSpacing, y);
     }
 
-    public bool IsInView() => latestElapsedTime <= NominalFallSeconds;
-
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, HitboxRadius);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position, VisibleRadius);
+    }
 }
