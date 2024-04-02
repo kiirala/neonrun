@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class CrashDetector : MonoBehaviour
 {
-    private ObstaclesContoller obstacles;
+    private ObstaclesController obstacles;
     private ShipController ship;
     private CommonGameState state;
 
     // Start is called before the first frame update
     void Start()
     {
-        obstacles = GetComponentInChildren<ObstaclesContoller>();
+        obstacles = GetComponentInChildren<ObstaclesController>();
         ship = GetComponentInChildren<ShipController>();
         state = GetComponent<CommonGameState>();
     }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using NeonRun.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +9,7 @@ namespace NeonRun
     {
         private ShipControls controls;
         private ShipController controller;
+        private CommonGameState state;
 
         public void OnEnable()
         {
@@ -31,6 +30,7 @@ namespace NeonRun
         void Start()
         {
             controller = GetComponent<ShipController>();
+            state = GetComponentInParent<CommonGameState>();
         }
 
         // Update is called once per frame
@@ -44,6 +44,12 @@ namespace NeonRun
             if (!context.performed) return;
             var value = context.ReadValue<float>();
             controller.ChangeLane((int)value);
+        }
+
+        public void OnBomb(InputAction.CallbackContext context)
+        {
+            if (!context.performed) return;
+            state.Bomb();
         }
     }
 }

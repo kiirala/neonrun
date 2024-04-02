@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ObstaclesContoller : MonoBehaviour
+public class ObstaclesController : MonoBehaviour
 {
     public SingleObstacleController ObstaclePrefab;
 
@@ -38,6 +38,7 @@ public class ObstaclesContoller : MonoBehaviour
         {
             if (!activeObstacles[i].IsInView)
             {
+                activeObstacles[i].gameObject.SetActive(false);
                 inactiveObstacles.Add(activeObstacles[i]);
                 activeObstacles.RemoveAt(i);
             }
@@ -54,6 +55,13 @@ public class ObstaclesContoller : MonoBehaviour
             o.BoardYPosition + o.HitboxRadius >= -range &&
             o.BoardYPosition - o.HitboxRadius <= range);
 
+    public void Bomb()
+    {
+        activeObstacles.ForEach(o => o.gameObject.SetActive(false));
+        inactiveObstacles.AddRange(activeObstacles);
+        activeObstacles.Clear();
+    }
+
     private void SpawnObstacle(int lane, int height)
     {
         SingleObstacleController obstacle;
@@ -66,6 +74,7 @@ public class ObstaclesContoller : MonoBehaviour
         {
             obstacle = Instantiate(ObstaclePrefab, transform);
         }
+        obstacle.gameObject.SetActive(true);
         obstacle.Initialize(lane, height, Time.time);
         activeObstacles.Add(obstacle);
     }

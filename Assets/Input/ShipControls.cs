@@ -37,6 +37,15 @@ namespace NeonRun.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Bomb"",
+                    ""type"": ""Button"",
+                    ""id"": ""51603139-50e4-438a-a798-64037dd21add"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -105,6 +114,39 @@ namespace NeonRun.Input
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""062d47cb-bd82-4203-8164-eca60505af09"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""781c7a01-fcf3-4e23-852e-188a607a687a"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""914498c0-970a-4895-982f-f98feae27825"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Bomb"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -114,6 +156,7 @@ namespace NeonRun.Input
             // Ship
             m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
             m_Ship_Move = m_Ship.FindAction("Move", throwIfNotFound: true);
+            m_Ship_Bomb = m_Ship.FindAction("Bomb", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -176,11 +219,13 @@ namespace NeonRun.Input
         private readonly InputActionMap m_Ship;
         private List<IShipActions> m_ShipActionsCallbackInterfaces = new List<IShipActions>();
         private readonly InputAction m_Ship_Move;
+        private readonly InputAction m_Ship_Bomb;
         public struct ShipActions
         {
             private @ShipControls m_Wrapper;
             public ShipActions(@ShipControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Ship_Move;
+            public InputAction @Bomb => m_Wrapper.m_Ship_Bomb;
             public InputActionMap Get() { return m_Wrapper.m_Ship; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -193,6 +238,9 @@ namespace NeonRun.Input
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Bomb.started += instance.OnBomb;
+                @Bomb.performed += instance.OnBomb;
+                @Bomb.canceled += instance.OnBomb;
             }
 
             private void UnregisterCallbacks(IShipActions instance)
@@ -200,6 +248,9 @@ namespace NeonRun.Input
                 @Move.started -= instance.OnMove;
                 @Move.performed -= instance.OnMove;
                 @Move.canceled -= instance.OnMove;
+                @Bomb.started -= instance.OnBomb;
+                @Bomb.performed -= instance.OnBomb;
+                @Bomb.canceled -= instance.OnBomb;
             }
 
             public void RemoveCallbacks(IShipActions instance)
@@ -220,6 +271,7 @@ namespace NeonRun.Input
         public interface IShipActions
         {
             void OnMove(InputAction.CallbackContext context);
+            void OnBomb(InputAction.CallbackContext context);
         }
     }
 }
