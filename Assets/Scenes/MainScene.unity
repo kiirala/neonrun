@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScorePerNominalSecond: 100
+  GrazeMultiplier: 5
 --- !u!114 &209325613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1023,6 +1024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitboxYPosition: -0.02
   HitboxRadius: 0.1
+  VisibleRadius: 0.46
 --- !u!1001 &1819477366
 PrefabInstance:
   m_ObjectHideFlags: 0

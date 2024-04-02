@@ -3,6 +3,7 @@ using UnityEngine;
 public class ScoreTracker : MonoBehaviour
 {
     public int ScorePerNominalSecond;
+    public float GrazeMultiplier;
 
     public int Score { get; private set; }
 
@@ -20,6 +21,7 @@ public class ScoreTracker : MonoBehaviour
         if (!state.Crashed)
         {
             var toAdd = Time.deltaTime * ScorePerNominalSecond + fractionalScore;
+            if (state.Grazing) toAdd *= GrazeMultiplier;
             var intScore = (int)toAdd;
             Score += intScore;
             fractionalScore = toAdd - intScore;

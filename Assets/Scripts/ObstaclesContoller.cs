@@ -49,11 +49,17 @@ public class ObstaclesController : MonoBehaviour
         }
     }
 
-    public IEnumerable<SingleObstacleController> GetNearZero(int lane, float range)
+    public IEnumerable<SingleObstacleController> GetHitboxNearZero(int lane, float range)
         => activeObstacles.Where(
             o => o.Lane == lane &&
             o.BoardYPosition + o.HitboxRadius >= -range &&
             o.BoardYPosition - o.HitboxRadius <= range);
+
+    public IEnumerable<SingleObstacleController> GetVisibleNearZero(int lane, float range)
+        => activeObstacles.Where(
+            o => o.Lane == lane &&
+            o.BoardYPosition + o.VisibleRadius >= -range &&
+            o.BoardYPosition - o.VisibleRadius <= range);
 
     public void Bomb()
     {

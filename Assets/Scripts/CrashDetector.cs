@@ -18,10 +18,12 @@ public class CrashDetector : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var colliding = obstacles.GetNearZero(ship.Lane, ship.HitboxRadius);
+        var colliding = obstacles.GetHitboxNearZero(ship.Lane, ship.HitboxRadius);
         if (colliding.Count() > 0)
         {
             state.Crash();
         }
+        var grazes = obstacles.GetVisibleNearZero(ship.Lane, ship.VisibleRadius);
+        state.Grazing = grazes.Count() > 0;
     }
 }

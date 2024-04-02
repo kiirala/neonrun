@@ -4,6 +4,7 @@ public class ShipController : MonoBehaviour
 {
     public float HitboxYPosition;
     public float HitboxRadius;
+    public float VisibleRadius;
 
     public int Lane { get; private set; }
 
@@ -38,7 +39,10 @@ public class ShipController : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        var center = transform.position + new Vector3(0, HitboxYPosition);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, HitboxYPosition), HitboxRadius);
+        Gizmos.DrawWireSphere(center, HitboxRadius);
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(center, VisibleRadius);
     }
 }
