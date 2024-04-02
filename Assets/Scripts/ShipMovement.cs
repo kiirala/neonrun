@@ -51,5 +51,11 @@ namespace NeonRun
             if (!context.performed) return;
             state.Bomb();
         }
+
+        public void OnFocus(InputAction.CallbackContext context)
+        {
+            if (context.started) state.Focused = true;
+            if (context.canceled) state.Focused = false;
+        }
     }
 }

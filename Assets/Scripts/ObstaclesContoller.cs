@@ -7,6 +7,7 @@ public class ObstaclesController : MonoBehaviour
     public SingleObstacleController ObstaclePrefab;
 
     private CommonGameState state;
+    private GameTime time;
 
     private readonly List<SingleObstacleController> activeObstacles = new();
     private readonly List<SingleObstacleController> inactiveObstacles = new();
@@ -15,6 +16,7 @@ public class ObstaclesController : MonoBehaviour
     void Start()
     {
         state = GetComponentInParent<CommonGameState>();
+        time = GetComponentInParent<GameTime>();
         inactiveObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
     }
 
@@ -32,7 +34,7 @@ public class ObstaclesController : MonoBehaviour
             SpawnObstacle(5, 1);
         }
 
-        activeObstacles.ForEach(o => { o.UpdatePosition(Time.time); });
+        activeObstacles.ForEach(o => { o.UpdatePosition(time.Seconds); });
         int i = 0;
         while (i < activeObstacles.Count)
         {

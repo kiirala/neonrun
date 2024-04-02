@@ -46,6 +46,15 @@ namespace NeonRun.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Focus"",
+                    ""type"": ""Button"",
+                    ""id"": ""98a40763-c5ca-4139-a4ee-acd466af57cc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -147,6 +156,39 @@ namespace NeonRun.Input
                     ""action"": ""Bomb"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5915504b-d34d-4a65-ae50-2a96eb1626c2"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Focus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77f4fe90-37dd-424a-be46-665941e56723"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Focus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6dcfb01b-c3c5-4c82-954e-d56773fa30df"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Focus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -157,6 +199,7 @@ namespace NeonRun.Input
             m_Ship = asset.FindActionMap("Ship", throwIfNotFound: true);
             m_Ship_Move = m_Ship.FindAction("Move", throwIfNotFound: true);
             m_Ship_Bomb = m_Ship.FindAction("Bomb", throwIfNotFound: true);
+            m_Ship_Focus = m_Ship.FindAction("Focus", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -220,12 +263,14 @@ namespace NeonRun.Input
         private List<IShipActions> m_ShipActionsCallbackInterfaces = new List<IShipActions>();
         private readonly InputAction m_Ship_Move;
         private readonly InputAction m_Ship_Bomb;
+        private readonly InputAction m_Ship_Focus;
         public struct ShipActions
         {
             private @ShipControls m_Wrapper;
             public ShipActions(@ShipControls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Ship_Move;
             public InputAction @Bomb => m_Wrapper.m_Ship_Bomb;
+            public InputAction @Focus => m_Wrapper.m_Ship_Focus;
             public InputActionMap Get() { return m_Wrapper.m_Ship; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -241,6 +286,9 @@ namespace NeonRun.Input
                 @Bomb.started += instance.OnBomb;
                 @Bomb.performed += instance.OnBomb;
                 @Bomb.canceled += instance.OnBomb;
+                @Focus.started += instance.OnFocus;
+                @Focus.performed += instance.OnFocus;
+                @Focus.canceled += instance.OnFocus;
             }
 
             private void UnregisterCallbacks(IShipActions instance)
@@ -251,6 +299,9 @@ namespace NeonRun.Input
                 @Bomb.started -= instance.OnBomb;
                 @Bomb.performed -= instance.OnBomb;
                 @Bomb.canceled -= instance.OnBomb;
+                @Focus.started -= instance.OnFocus;
+                @Focus.performed -= instance.OnFocus;
+                @Focus.canceled -= instance.OnFocus;
             }
 
             public void RemoveCallbacks(IShipActions instance)
@@ -272,6 +323,7 @@ namespace NeonRun.Input
         {
             void OnMove(InputAction.CallbackContext context);
             void OnBomb(InputAction.CallbackContext context);
+            void OnFocus(InputAction.CallbackContext context);
         }
     }
 }

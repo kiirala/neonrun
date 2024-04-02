@@ -4,6 +4,7 @@ public class CommonGameState : MonoBehaviour
 {
     public bool Crashed { get; private set; }
     public bool Grazing { get; set; }
+    public bool Focused { get; set; }
 
     private ObstaclesController obstacles;
 
