@@ -30,12 +30,16 @@ public class ShipController : MonoBehaviour
         {
             Lane--;
         }
-        transform.localPosition = new Vector3(
-            (Lane - board.ZeroXPositionLane) * board.LaneSpacing,
-            transform.localPosition.y);
+        UpdateSpritePosition();
     }
 
     public float HitboxYCenter { get => transform.localPosition.y + HitboxYPosition; }
+
+    public void Restart()
+    {
+        Lane = board.ZeroXPositionLane;
+        UpdateSpritePosition();
+    }
 
     void OnDrawGizmos()
     {
@@ -44,5 +48,12 @@ public class ShipController : MonoBehaviour
         Gizmos.DrawWireSphere(center, HitboxRadius);
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(center, VisibleRadius);
+    }
+
+    private void UpdateSpritePosition()
+    {
+        transform.localPosition = new Vector3(
+            (Lane - board.ZeroXPositionLane) * board.LaneSpacing,
+            transform.localPosition.y);
     }
 }

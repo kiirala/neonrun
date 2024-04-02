@@ -12,6 +12,12 @@ public class ScoreTracker : MonoBehaviour
     private GameTime time;
     private float fractionalScore;
 
+    public void Restart()
+    {
+        Score = 0;
+        fractionalScore = 0;
+    }
+
     void Start()
     {
         state = GetComponent<CommonGameState>();

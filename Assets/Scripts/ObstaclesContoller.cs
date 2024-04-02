@@ -70,6 +70,13 @@ public class ObstaclesController : MonoBehaviour
         activeObstacles.Clear();
     }
 
+    public void Restart()
+    {
+        activeObstacles.ForEach(o => o.gameObject.SetActive(false));
+        inactiveObstacles.AddRange(activeObstacles);
+        activeObstacles.Clear();
+    }
+
     private void SpawnObstacle(int lane, int height)
     {
         SingleObstacleController obstacle;
@@ -83,7 +90,7 @@ public class ObstaclesController : MonoBehaviour
             obstacle = Instantiate(ObstaclePrefab, transform);
         }
         obstacle.gameObject.SetActive(true);
-        obstacle.Initialize(lane, height, Time.time);
+        obstacle.Initialize(lane, height, time.Seconds);
         activeObstacles.Add(obstacle);
     }
 
