@@ -1152,6 +1152,9 @@ MonoBehaviour:
   ObstaclePatterns:
   - {fileID: 4900000, guid: 9b5ae9af79a657841a6a61d94b8d8209, type: 3}
   - {fileID: 4900000, guid: e6115e5e36fe7e742a5058791b29e90f, type: 3}
+  - {fileID: 4900000, guid: 6201dc0b9d2d660459ea09212deb94d2, type: 3}
+  - {fileID: 4900000, guid: d3f29f81cc6ee414cb82f630d69ef618, type: 3}
+  - {fileID: 4900000, guid: de93666ca28b2574dac534d5475dcb27, type: 3}
 --- !u!1001 &1136665058
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1931,7 +1934,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 22.85, y: 25.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2011530102
 MonoBehaviour:
