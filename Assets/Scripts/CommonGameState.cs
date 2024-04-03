@@ -33,6 +33,7 @@ public class CommonGameState : MonoBehaviour
         Focused = false;
         obstacles.Restart();
         GetComponent<ScoreTracker>().Restart();
+        GetComponent<GameTime>().Restart();
         GetComponentInChildren<ShipController>().Restart();
         CrashedOverlay.SetActive(false);
     }

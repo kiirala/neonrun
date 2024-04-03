@@ -236,6 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FocusedMultiplier: 0.5
+  SpeedupFactor: 1.01
 --- !u!1 &229523663
 GameObject:
   m_ObjectHideFlags: 0

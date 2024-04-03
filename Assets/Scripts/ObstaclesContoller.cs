@@ -79,6 +79,8 @@ public class ObstaclesController : MonoBehaviour
         activeObstacles.ForEach(o => o.gameObject.SetActive(false));
         inactiveObstacles.AddRange(activeObstacles);
         activeObstacles.Clear();
+        nextSpawnTime = time.Seconds +
+            boardConfiguration.SingleLineSeconds * SpacingBetweenPatterns;
     }
 
     public void Restart()
@@ -86,6 +88,7 @@ public class ObstaclesController : MonoBehaviour
         activeObstacles.ForEach(o => o.gameObject.SetActive(false));
         inactiveObstacles.AddRange(activeObstacles);
         activeObstacles.Clear();
+        nextSpawnTime = 0;
     }
 
     private void SpawnObstacle(int lane, float height)
