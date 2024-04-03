@@ -15,6 +15,8 @@ public class BoardConfiguration : MonoBehaviour
     public float LaneSpacing = 0.8f;
     public int ZeroXPositionLane = 3;
 
+    public float SingleLineSeconds { get => NominalFallSeconds / GameAreaHeight; }
+
     void OnDrawGizmos()
     {
         var lanex = new float[MaxLane - MinLane + 1];

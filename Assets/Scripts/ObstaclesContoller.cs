@@ -1,23 +1,35 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class ObstaclesController : MonoBehaviour
 {
+    public int SecondsPerObstacleLevel;
+    public float SpacingBetweenPatterns;
     public SingleObstacleController ObstaclePrefab;
+    public TextAsset[] ObstaclePatterns;
 
     private CommonGameState state;
     private GameTime time;
+    private BoardConfiguration boardConfiguration;
+
+    private float nextSpawnTime;
 
     private readonly List<SingleObstacleController> activeObstacles = new();
     private readonly List<SingleObstacleController> inactiveObstacles = new();
+
+    private readonly Dictionary<int, List<ObstaclePattern>> patterns = new();
 
     // Start is called before the first frame update
     void Start()
     {
         state = GetComponentInParent<CommonGameState>();
         time = GetComponentInParent<GameTime>();
+        boardConfiguration = GetComponentInParent<BoardConfiguration>();
         inactiveObstacles.AddRange(GetComponentsInChildren<SingleObstacleController>());
+        ReadPatterns();
+        nextSpawnTime = 0;
     }
 
     // Update is called once per frame
@@ -25,13 +37,12 @@ public class ObstaclesController : MonoBehaviour
     {
         if (state.Crashed) return;
 
-        if (activeObstacles.Count == 0)
+        if (time.Seconds >= nextSpawnTime)
         {
-            SpawnObstacle(1, 1);
-            SpawnObstacle(2, 3);
-            SpawnObstacle(3, 2);
-            SpawnObstacle(4, 3);
-            SpawnObstacle(5, 1);
+            var pattern = PickObstaclePattern();
+            pattern.Obstacles.ForEach(o => SpawnObstacle(o.Item1, o.Item2));
+            nextSpawnTime = time.Seconds +
+                boardConfiguration.SingleLineSeconds * (pattern.Height + SpacingBetweenPatterns);
         }
 
         activeObstacles.ForEach(o => { o.UpdatePosition(time.Seconds); });
@@ -77,7 +88,7 @@ public class ObstaclesController : MonoBehaviour
         activeObstacles.Clear();
     }
 
-    private void SpawnObstacle(int lane, int height)
+    private void SpawnObstacle(int lane, float height)
     {
         SingleObstacleController obstacle;
         if (inactiveObstacles.Count > 0)
@@ -94,4 +105,25 @@ public class ObstaclesController : MonoBehaviour
         activeObstacles.Add(obstacle);
     }
 
+    private void ReadPatterns()
+    {
+        foreach (var f in ObstaclePatterns)
+        {
+            var filePatterns = ObstaclePattern.ReadFrom(f);
+            foreach (var p in filePatterns)
+            {
+                if (!patterns.ContainsKey(p.Level)) patterns.Add(p.Level, new());
+                patterns[p.Level].Add(p);
+            }
+        }
+    }
+
+    private ObstaclePattern PickObstaclePattern()
+    {
+        var level = (int)(time.Seconds / SecondsPerObstacleLevel + 1);
+        while (!patterns.ContainsKey(level)) level--;
+        while (level > 1 && UnityEngine.Random.value > 0.5) level--;
+        var list = patterns[level];
+        return list[UnityEngine.Random.Range(0, list.Count)];
+    }
 }
