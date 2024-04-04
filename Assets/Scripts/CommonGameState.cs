@@ -21,11 +21,6 @@ public class CommonGameState : MonoBehaviour
         CrashedOverlay.SetActive(true);
     }
 
-    public void Bomb()
-    {
-        if (!Crashed) obstacles.Bomb();
-    }
-
     public void Restart()
     {
         Crashed = false;
@@ -34,6 +29,7 @@ public class CommonGameState : MonoBehaviour
         obstacles.Restart();
         GetComponent<ScoreTracker>().Restart();
         GetComponent<GameTime>().Restart();
+        GetComponent<BombController>().Restart();
         GetComponentInChildren<ShipController>().Restart();
         CrashedOverlay.SetActive(false);
     }

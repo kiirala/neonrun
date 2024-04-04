@@ -10,6 +10,7 @@ namespace NeonRun
         private ShipControls controls;
         private ShipController controller;
         private CommonGameState state;
+        private BombController bombController;
 
         public void OnEnable()
         {
@@ -31,6 +32,7 @@ namespace NeonRun
         {
             controller = GetComponent<ShipController>();
             state = GetComponentInParent<CommonGameState>();
+            bombController = GetComponentInParent<BombController>();
         }
 
         // Update is called once per frame
@@ -49,7 +51,7 @@ namespace NeonRun
         public void OnBomb(InputAction.CallbackContext context)
         {
             if (!context.performed) return;
-            state.Bomb();
+            bombController.TriggerBomb();
         }
 
         public void OnFocus(InputAction.CallbackContext context)
