@@ -8,6 +8,9 @@ public class CommonGameState : MonoBehaviour
     public bool Grazing { get; set; }
     public bool Focused { get; set; }
 
+    public delegate void RestartAction();
+    public event RestartAction OnRestart;
+
     private ObstaclesController obstacles;
 
     void Start()
@@ -31,6 +34,7 @@ public class CommonGameState : MonoBehaviour
         GetComponent<GameTime>().Restart();
         GetComponent<BombController>().Restart();
         GetComponentInChildren<ShipController>().Restart();
+        OnRestart();
         CrashedOverlay.SetActive(false);
     }
 }

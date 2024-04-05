@@ -6,6 +6,10 @@ public class BombController : MonoBehaviour
 
     public int Bombs { get; private set; }
 
+    public delegate void BombAction();
+    public event BombAction OnBombActivated;
+
+
     private ObstaclesController obstaclesController;
     private CommonGameState gameState;
 
@@ -21,6 +25,7 @@ public class BombController : MonoBehaviour
         if (Bombs <= 0 || gameState.Crashed) return;
         Bombs--;
         obstaclesController.Bomb();
+        OnBombActivated();
     }
 
     public void Restart()

@@ -7,16 +7,30 @@ public class BombCounter : MonoBehaviour
 
     private SpriteRenderer[] icons;
     private BombController controller;
+    private CommonGameState gameState;
 
     // Start is called before the first frame update
     void Start()
     {
         icons = GetComponentsInChildren<SpriteRenderer>();
         controller = GetComponentInParent<BombController>();
+        gameState = GetComponentInParent<CommonGameState>();
+        UpdateBombCounter();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnEnable()
+    {
+        GetComponentInParent<BombController>().OnBombActivated += UpdateBombCounter;
+        GetComponentInParent<CommonGameState>().OnRestart += UpdateBombCounter;
+    }
+
+    void OnDisable()
+    {
+        controller.OnBombActivated -= UpdateBombCounter;
+        gameState.OnRestart -= UpdateBombCounter;
+    }
+
+    void UpdateBombCounter()
     {
         for (int i = 0; i < icons.Length; ++i)
         {
