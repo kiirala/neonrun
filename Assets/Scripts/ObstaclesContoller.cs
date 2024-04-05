@@ -73,12 +73,22 @@ public class ObstaclesController : MonoBehaviour
             o => o.Lane == lane &&
             o.BoardYPosition + o.VisibleRadius >= -range &&
             o.BoardYPosition - o.VisibleRadius <= range);
+    
+    public void RemoveObstaclesBelow(int lane, float height)
+    {
+        var toRemove = activeObstacles
+            .Where(o => o.Lane == lane && o.BoardYPosition < height)
+            .ToList();
+        activeObstacles.RemoveAll(o => o.Lane == lane && o.BoardYPosition < height);
+        toRemove.ForEach(o => o.gameObject.SetActive(false));
+        inactiveObstacles.AddRange(toRemove);
+    }
 
     public void Bomb()
     {
-        activeObstacles.ForEach(o => o.gameObject.SetActive(false));
-        inactiveObstacles.AddRange(activeObstacles);
-        activeObstacles.Clear();
+        // activeObstacles.ForEach(o => o.gameObject.SetActive(false));
+        // inactiveObstacles.AddRange(activeObstacles);
+        // activeObstacles.Clear();
         nextSpawnTime = time.Seconds +
             boardConfiguration.SingleLineSeconds * SpacingBetweenPatterns;
     }
