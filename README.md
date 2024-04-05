@@ -21,7 +21,6 @@ Created as an entry for Games Job Fair Spring 2024 LITE - Unity Engine Programmi
 To be done:
 
 1. Focus visuals: visual effect when player is in focus mode
-1. Bomb visuals: visual effect for activating a bomb
 1. Re-gain bombs: grazing enough gives an extra bomb
 
 Already completed:
@@ -42,3 +41,4 @@ Already completed:
 1. Retry prompt in end screen
 1. Graze visuals: visual effect when player receives extra points from grazing an obstacle
 1. Bomb counter: give pre-defined number of bombs at start, decrease by one when a bomb is used, don't allow bombing when zero
+1. Bomb visuals: visual effect for activating a bomb
